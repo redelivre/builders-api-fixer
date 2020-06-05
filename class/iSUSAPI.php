@@ -4,6 +4,10 @@ class IsusAPI {
 	
 	private static $instance = null;
 	
+	/**
+	 * create or get object instance 
+	 * @return IsusAPI
+	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {
 			self::$instance = new self();
@@ -19,6 +23,10 @@ class IsusAPI {
 		add_action( 'rest_api_init', array($this, 'rest_api_init') );
 	}
 	
+	/**
+	 * Re-registry post content field
+	 * @param array $param
+	 */
 	public function rest_api_init($param) {
 			register_rest_field(
 					array('post', 'page', project),
@@ -40,7 +48,16 @@ class IsusAPI {
 					)
 			);
 	}
-		
+	
+	/**
+	 * 
+	 * redo content field resolving the shorcodes or removing
+	 * 
+	 * @param WP_Post $object
+	 * @param string $field_name
+	 * @param WP_REST_Request $request
+	 * @return array
+	 */
 	public function do_divi_shortcodes( $object, $field_name, $request ) {
 		global $post;
 		$post = get_post($object['id']);
@@ -48,17 +65,22 @@ class IsusAPI {
 		global $wp_query;
 		$wp_query->is_singular = true;
 		
-		$output = array(
-				//'protected' => false
-		);
+		//Check if has Divi Builder and if is loaded
+		if( ! class_exists('ET_Builder_Module_Text') ) {
+			if(function_exists('et_builder_add_main_elements') ) {
+				et_builder_add_main_elements();
+			}
+		}
+		
+		$output = array();
 		
 		switch( $field_name ) {
 			case 'content':
-				$output['rendered'] =   apply_filters( 'the_content', get_the_content(null, false, $post));
+				$output['rendered'] = apply_filters( 'the_content', get_the_content(null, false, $post));
 				$output['striped'] = preg_replace('/\[\/?et_pb.*?\]/', '', strip_shortcodes(get_the_content(null, false, $post) ));
 				break;
 			case 'excerpt':
-				$output['rendered'] =  apply_filters( 'the_excerpt', get_the_excerpt($post));
+				$output['rendered'] = apply_filters( 'the_excerpt', get_the_excerpt($post));
 				$output['striped'] = preg_replace('/\[\/?et_pb.*?\]/', '', strip_shortcodes(get_the_excerpt($post) ));
 				break;
 		}
