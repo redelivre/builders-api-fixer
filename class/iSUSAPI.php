@@ -29,7 +29,7 @@ class IsusAPI {
 	 */
 	public function rest_api_init($param) {
 			register_rest_field(
-					array('post', 'page', project),
+					array('post', 'page', 'project'),
 					'content',
 					array(
 							'get_callback'    => array($this, 'do_divi_shortcodes'),
@@ -39,7 +39,7 @@ class IsusAPI {
 			);
 			
 			register_rest_field(
-					array('post', 'page', project),
+					array('post', 'page', 'project'),
 					'excerpt',
 					array(
 							'get_callback'    => array($this, 'do_divi_shortcodes'),
@@ -63,6 +63,9 @@ class IsusAPI {
 		$post = get_post($object['id']);
 		
 		global $wp_query;
+		$wp_query->setup_postdata($post);
+		$wp_query->queried_object = $post;
+		$wp_query->queried_object_id = $object['id'];
 		$wp_query->is_singular = true;
 		
 		$output = array();
