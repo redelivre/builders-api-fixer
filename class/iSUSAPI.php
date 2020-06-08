@@ -65,6 +65,17 @@ class IsusAPI {
 		global $wp_query;
 		$wp_query->is_singular = true;
 		
+		$output = array();
+		
+		switch( $field_name ) {
+			case 'content':
+				$output['striped'] = preg_replace('/\[\/?et_pb.*?\]/', '', strip_shortcodes(get_the_content(null, false, $post) ));
+				break;
+			case 'excerpt':
+				$output['striped'] = preg_replace('/\[\/?et_pb.*?\]/', '', strip_shortcodes(get_the_excerpt($post) ));
+				break;
+		}
+		
 		//Check if has Divi Builder and if is loaded
 		if( ! class_exists('ET_Builder_Module_Text') ) {
 			if(function_exists('et_builder_add_main_elements') ) {
@@ -72,16 +83,12 @@ class IsusAPI {
 			}
 		}
 		
-		$output = array();
-		
 		switch( $field_name ) {
 			case 'content':
 				$output['rendered'] = apply_filters( 'the_content', get_the_content(null, false, $post));
-				$output['striped'] = preg_replace('/\[\/?et_pb.*?\]/', '', strip_shortcodes(get_the_content(null, false, $post) ));
 				break;
 			case 'excerpt':
 				$output['rendered'] = apply_filters( 'the_excerpt', get_the_excerpt($post));
-				$output['striped'] = preg_replace('/\[\/?et_pb.*?\]/', '', strip_shortcodes(get_the_excerpt($post) ));
 				break;
 		}
 		
