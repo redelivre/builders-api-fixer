@@ -95,6 +95,12 @@ class IsusAPI {
 				break;
 		}
 		
+		$reW = '/(<iframe )(.*)(?\'width\'width=[\'"]\d*[\'"])(.*)((.*\/>)|(>.*<\/iframe>))/i';
+		$reH = '/(<iframe )(.*)(?\'height\'height=[\'"]\d*[\'"])(.*)((.*\/>)|(>.*<\/iframe>))/i';
+		$subst = '$1$2$4$5';
+		
+		$output['rendered'] = preg_replace($reW, $subst, $output['rendered']);
+		$output['rendered'] = preg_replace($reH, $subst, $output['rendered']);
 		return $output;
 	}
 }
