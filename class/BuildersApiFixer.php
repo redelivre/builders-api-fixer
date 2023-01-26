@@ -1,12 +1,12 @@
 <?php
 
-class IsusAPI {
+class BuildersApiFixer {
 	
 	private static $instance = null;
 	
 	/**
 	 * create or get object instance 
-	 * @return IsusAPI
+	 * @return BuildersApiFixer
 	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {
@@ -21,7 +21,6 @@ class IsusAPI {
 	
 	public function init() {
 		add_action( 'rest_api_init', array($this, 'rest_api_init') );
-		$this->create_isus_tax();
 	}
 	
 	/**
@@ -105,33 +104,6 @@ class IsusAPI {
 		return $output;
 	}
 	
-	function create_isus_tax() {
-		// Add new taxonomy, make it hierarchical (like categories)
-		$labels = array(
-				'name'              => __( 'iSUS', 'isus' ),
-				'singular_name'     => __( 'iSUS', 'isus' ),
-				'search_items'      => __( 'Procurar iSUS', 'isus' ),
-				'all_items'         => __( 'Todo o iSUS', 'isus' ),
-				'parent_item'       => __( 'Parente iSUS', 'isus' ),
-				'parent_item_colon' => __( 'Parente iSUS:', 'isus' ),
-				'edit_item'         => __( 'Editar iSUS', 'isus' ),
-				'update_item'       => __( 'Atualizar iSUS', 'isus' ),
-				'add_new_item'      => __( 'Adcionar iSUS', 'isus' ),
-				'new_item_name'     => __( 'Novo iSUS', 'isus' ),
-				'menu_name'         => __( 'iSUS', 'isus' ),
-		);
-		
-		$args = array(
-				'hierarchical'      => true,
-				'labels'            => $labels,
-				'show_ui'           => true,
-				'show_admin_column' => true,
-				'query_var'         => true,
-				'rewrite'           => array( 'slug' => 'isus' ),
-		);
-		
-		register_taxonomy( 'isus', array( 'project', 'post' ), $args );	
-	}
 }
 
-\IsusAPI::get_instance();
+\BuildersApiFixer::get_instance();

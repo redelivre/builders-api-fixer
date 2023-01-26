@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Plugin Name: iSUS WordPress Api fixer
- * Plugin URI: https://github.com/EscolaDeSaudePublica/isus-api-wordpress
+ * Plugin Name: WordPress Builders Api fixer
+ * Plugin URI: https://github.com/FeliciLab/isus-api-wordpress
  * Description: Fix for some problems with WordPress API end builders
  * Version: 0.0.1
  * Text Domain: isus-api-wordpress
@@ -12,4 +12,4 @@
  * License: GPL3
  */
 
-	require_once 'class/iSUSAPI.php';
+	require_once 'class/BuildersApiFixer.php';
